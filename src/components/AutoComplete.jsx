@@ -1,50 +1,52 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react';
 
-const  fruits = ["apple", "banana", "cherry", "date", "elderberry", "fig"]
+const fruits = ["apple", "banana", "cherry", "date", "elderberry", "fig"];
 
 const AutoComplete = () => {
-    const[input,setInput] = useState('')
-    const[suggestions,setSuggestions] = useState([])
-    
-    useEffect(()=>{
+  const [inputValue, setInputValue] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
 
-     const getSuggestions = ()=>{
-        if(!input){
-            return [];
-        }
-        return fruits.filter(fruit =>fruit.toLowerCase().includes(input.toLowerCase()))
-     }
-     setSuggestions(getSuggestions())
-    },[input])
+  useEffect(() => {
+    const getSuggestions = () => {
+      if (!inputValue) {
+        return [];
+      }
+      return fruits.filter(fruit =>
+        fruit.toLowerCase().includes(inputValue.toLowerCase())
+      );
+    };
 
-    const inputChange = (e)=>{
-       setInput(e.target.value);
+    setSuggestions(getSuggestions());
+  }, [inputValue]);
 
-    }
-    // const handleSuggestionClick = (suggestion) => {
-    //     setInput(suggestion);
-    //     setSuggestions([]);
-    //   };
-    // onClick={() => handleSuggestionClick(suggestion)}
-    
+  const handleChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setInputValue(suggestion);
+    setSuggestions([]);
+  };
+
   return (
     <div>
-      <input 
-      type='text'
-      value={input}
-      onChange={inputChange}
+      <input
+        type="text"
+        value={inputValue}
+        onChange={handleChange}
+        placeholder="Search fruits..."
       />
-      {suggestions.length >0 && (
+      {suggestions.length > 0 && (
         <ul>
-            {suggestions.map((suggestion,index)=>(
-                <li key={index} > 
-                    {suggestion}
-                </li>
-            ))}
+          {suggestions.map((suggestion, index) => (
+            <li key={index} onClick={() => handleSuggestionClick(suggestion)}>
+              {suggestion}
+            </li>
+          ))}
         </ul>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default AutoComplete
+export default AutoComplete;
